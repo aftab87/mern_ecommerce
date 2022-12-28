@@ -1,9 +1,11 @@
 import express from 'express';
 import dotenv from "dotenv";
-const app = express();
+import connectDB from './config/db.js';
 import productRouter from './routes/api/products.js';
 
 dotenv.config();
+connectDB();
+const app = express();
 
 app.use('/api/products', productRouter)
 
