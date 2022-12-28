@@ -1,0 +1,26 @@
+{
+  "name": "mern_ecommerce",
+  "version": "1.0.0",
+  "description": "An ecommerce web app for Aftab's portfolio",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "server": "nodemon backend/server --watch"
+  },
+  "keywords": [
+    "ecommerce",
+    "aftab",
+    "safdar",
+    "mern",
+    "mongodb",
+    "express",
+    "react",
+    "nodejs"
+  ],
+  "author": "Aftab Safdar",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
