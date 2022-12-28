@@ -31,7 +31,7 @@ const orderSchema = mongoose.Schema({
             },
         }
     ],
-    shipping_address: {
+    shippingAddress: {
         address: {
             type: String,
             required: true
@@ -40,7 +40,7 @@ const orderSchema = mongoose.Schema({
             type: String,
             required: true
         },
-        postal_code: {
+        postalCode: {
             type: String,
             required: true
         },
@@ -49,57 +49,57 @@ const orderSchema = mongoose.Schema({
             required: true
         }
     },
-    payment_method: {
+    paymentMethod: {
         type: String,
         default: false
     },
-    payment_result: {
+    paymentResult: {
         id: {
             type: String,
         },
         status: {
             type: String
         },
-        updated_at: {
+        updatedAt: {
             type: String
         },
         email: {
             type: String
         }
     },
-    tax_price: {
+    taxPrice: {
         type: Number,
         required: true,
         default: 0.0
     },
-    shipping_price: {
+    shippingPrice: {
         type: Number,
         required: true,
         default: 0.0
     },
-    total_price: {
+    totalPrice: {
         type: Number,
         required: true,
         default: 0.0
     },
-    is_paid: {
+    isPaid: {
         type: Boolean,
         required: true,
         default: false
     },
-    paid_at: {
+    paidAt: {
         type: Date
     },
-    is_delivered: {
+    isDelivered: {
         type: Boolean,
         required: true,
         default: false
     },
-    delivered_at: {
+    deliveredAt: {
         type: Date
     },
 }, {
-    timestamps: true // Automatically creates the created_at and updated_at fields
+    timestamps: true // Automatically creates the createdAt and updatedAt fields
 })
 
 const Order = mongoose.model('Order', orderSchema);

@@ -18,7 +18,7 @@ const reviewSchema = mongoose.Schema({
 })
 
 const productSchema = mongoose.Schema({
-    created_by: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
@@ -51,7 +51,7 @@ const productSchema = mongoose.Schema({
         default: true,
         default: 0
     },
-    num_reviews: {
+    numReviews: {
         type: Number,
         default: true,
         default: 0
@@ -61,13 +61,13 @@ const productSchema = mongoose.Schema({
         default: true,
         default: 0
     },
-    count_in_stock: {
+    countInStock: {
         type: Number,
         default: true,
         default: 0
     },
 }, {
-    timestamps: true // Automatically creates the created_at and updated_at fields
+    timestamps: true // Automatically creates the createdAt and updatedAt fields
 })
 
 const Product = mongoose.model('Product', productSchema);

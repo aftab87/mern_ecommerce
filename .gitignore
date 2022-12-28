@@ -7,6 +7,10 @@ package-lock.json
 /.pnp
 .pnp.js
 
+/backend/seeder.js
+/backend/data/users.js
+
+
 # testing
 /coverage
 

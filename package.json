@@ -5,7 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "server": "nodemon backend/server --watch"
+    "server": "nodemon backend/server --watch",
+    "data:import": "node backend/seeder",
+    "data:destroy": "node backend/seeder -d"
   },
   "keywords": [
     "ecommerce",
@@ -23,6 +25,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
     "mongoose": "^6.8.1"
   }
 }

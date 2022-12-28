@@ -11,9 +11,8 @@ const ProductPage = () => {
 
     useEffect(() => {
         const fetchProduct = async () => {
-            const { data } = await axios.get('/api/products/' + id)
-
-            setProduct(data);
+            axios.get('/api/products/' + id)
+                .then(({ data }) => setProduct(data))
         }
         fetchProduct();
     }, [id]);
