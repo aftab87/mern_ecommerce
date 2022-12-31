@@ -2,13 +2,16 @@ import express from 'express';
 import dotenv from "dotenv";
 import connectDB from './config/db.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
-import productRouter from './routes/api/products.js';
+import productRoutes from './routes/productRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 connectDB();
 const app = express();
+app.use(express.json()) // Accept JSON data in the body .. body-parser
 
-app.use('/api/products', productRouter)
+app.use('/api/products', productRoutes)
+app.use('/api/users', userRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
