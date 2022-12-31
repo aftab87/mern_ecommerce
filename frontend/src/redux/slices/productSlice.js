@@ -31,7 +31,10 @@ export const getProduct = (id) => {
             const { data } = await axios.get(`/api/products/${id}`);
             dispatch(save(data))
         } catch (e) {
-            dispatch(fail(e.response.data))
+            dispatch(fail(e.response && e.response.data.message
+                ? e.response.data.message
+                : e.message
+            ))
         }
     }
 }

@@ -7,6 +7,7 @@ import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
+import LoginPage from './pages/LoginPage';
 
 const App = () => {
   return (
@@ -15,7 +16,8 @@ const App = () => {
       <main className='py-3'>
         <Container >
           <Routes>
-            <Route index element={<HomePage />} />
+            <Route path="" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path='/product/:id' element={<ProductPage />} />
             {/* '?' in path means optional */}
             <Route path='/cart/:id?' element={<CartPage />} />

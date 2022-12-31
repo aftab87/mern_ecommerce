@@ -38,6 +38,7 @@ const registerUser = asyncHandler(async ({ body: { name, email, password } }, re
 const authUser = asyncHandler(async ({ body: { email, password } }, res) => {
     const user = await User.findOne({ email });
     if (user && (await user.matchPassword(password))) {
+        console.log(user)
         res.json({
             _id: user._id,
             name: user.name,

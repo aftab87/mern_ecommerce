@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 
 const initialState = {
-    cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
+    cartItems: localStorage.getItem('cartItems')
+        ? JSON.parse(localStorage.getItem('cartItems'))
+        : []
 }
 
 export const cartSlice = createSlice({
@@ -31,8 +33,8 @@ export const addToCart = (id, qty) => {
     return async (dispatch, getState) => {
         const { data: { _id, name, image, price, countInStock } } = await axios.get(`/api/products/${id}`)
         qty = (countInStock === 0) ? 0
-        : (qty < 0) ? 1
-        : (qty > countInStock) ? countInStock : qty
+            : (qty < 0) ? 1
+                : (qty > countInStock) ? countInStock : qty
 
         dispatch(
             add({

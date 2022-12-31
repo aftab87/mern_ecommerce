@@ -1,8 +1,18 @@
 import React from 'react'
 import { LinkContainer } from 'react-router-bootstrap';
-import { Container, Nav, Navbar } from 'react-bootstrap'
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../redux/slices/userSlice';
 
 const Header = () => {
+    const dispatch = useDispatch();
+
+    const { user } = useSelector(state => state.user)
+
+    const logoutHandler = () => {
+        dispatch(logout())
+    }
+
     return (
         <header>
             <Navbar bg="primary" variant='dark' expand="lg" collapseOnSelect>
@@ -18,11 +28,26 @@ const Header = () => {
                             navbarScroll
                         >
                             <LinkContainer to="/cart">
-                                <Nav.Link><i className='fas fa-shopping-cart'></i>Cart</Nav.Link>
+                                <Nav.Link><i className='fas fa-shopping-cart mx-1'></i>Cart</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/login">
-                                <Nav.Link><i className='fas fa-user'></i>Login</Nav.Link>
-                            </LinkContainer>
+                            {user
+                                ? (
+                                    <NavDropdown title={user.name} id='username'>
+                                        <LinkContainer to='/profile'>
+                                            <NavDropdown.Item>Profile</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <NavDropdown.Item onClick={logoutHandler}>
+                                            Log Out
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
+                                )
+                                : (
+                                    <LinkContainer to="/login">
+                                        <Nav.Link><i className='fas fa-user mx-1'></i>Log In</Nav.Link>
+                                    </LinkContainer>
+                                )
+                            }
+
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
