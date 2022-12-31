@@ -3,7 +3,7 @@ import { Button, Card, Col, Form, Image, ListGroup, ListGroupItem, Row } from 'r
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Message from '../components/Message';
-import { addToCart, removeFromCart } from '../redux/actions/cartActions';
+import { addToCart, removeFromCart } from '../redux/slices/cartSlice';
 
 const CartPage = () => {
     const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const CartPage = () => {
     const [searchParams] = useSearchParams();
     const qty = Number(searchParams.get('qty')) || 1;
 
-    
+
     const { cartItems } = useSelector(state => state.cart);
 
     useEffect(() => {

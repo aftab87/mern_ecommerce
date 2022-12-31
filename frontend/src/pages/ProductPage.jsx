@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Image, ListGroup, ListGroupItem, Row, Card, Form } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Button, Col, Image, ListGroup, ListGroupItem, Row, Card, Form } from 'react-bootstrap';
 import Rating from '../components/Rating';
-import { useDispatch, useSelector } from 'react-redux';
-import { productDetails } from '../redux/actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { getProduct } from '../redux/slices/productSlice';
 
 const ProductPage = ({ history }) => {
     const [qty, setQty] = useState(1);
@@ -16,7 +16,7 @@ const ProductPage = ({ history }) => {
     let { id } = useParams();
 
     useEffect(() => {
-        dispatch(productDetails(id))
+        dispatch(getProduct(id))
     }, [dispatch, id]);
 
     const addToCartHandler = () => {
@@ -34,7 +34,8 @@ const ProductPage = ({ history }) => {
                 ? <Loader />
                 : error
                     ? <Message variant='danger'>{error}</Message>
-                    : <Row>
+                    : product &&
+                    (<Row>
                         <Col lg={6}>
                             <Image src={product.image} alt={product.name} fluid />
                         </Col>
@@ -95,7 +96,7 @@ const ProductPage = ({ history }) => {
                                 </ListGroup>
                             </Card>
                         </Col>
-                    </Row>
+                    </Row>)
             }
         </>
     )

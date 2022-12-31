@@ -8,14 +8,14 @@ const Rating = ({ value, text, color }) => {
             stars.push(
                 <span key={'star' + i}>
                     <i
-                    style={{ color: color ? color : "#c8c805" }}
-                    className={
-                        value >= i
-                            ? 'fas fa-star'
-                            : value >= i - 0.5
-                                ? 'fas fa-star-half-alt'
-                                : 'far fa-star'
-                    }></i>
+                        style={{ color: color ? color : "#c8c805" }}
+                        className={
+                            value >= i
+                                ? 'fas fa-star'
+                                : value >= i - 0.5
+                                    ? 'fas fa-star-half-alt'
+                                    : 'far fa-star'
+                        }></i>
                 </span>
             )
         }
