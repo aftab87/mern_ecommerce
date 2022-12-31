@@ -6,7 +6,7 @@ const initialState = {
 }
 
 export const cartSlice = createSlice({
-    name: 'cartItems',
+    name: 'cart',
     initialState,
     reducers: {
         add: (state, { payload }) => {
@@ -18,9 +18,11 @@ export const cartSlice = createSlice({
             } else {
                 state.cartItems = [...state.cartItems, curItem]
             }
+            localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
         },
         remove: (state, { payload }) => {
             state.cartItems = state.cartItems.filter(curItem => curItem.product !== payload)
+            localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
         }
     }
 })
@@ -31,7 +33,6 @@ export const addToCart = (id, qty) => {
         qty = (countInStock === 0) ? 0
         : (qty < 0) ? 1
         : (qty > countInStock) ? countInStock : qty
-        localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 
         dispatch(
             add({
@@ -50,7 +51,6 @@ export const addToCart = (id, qty) => {
 export const removeFromCart = (id) => {
     return async (dispatch, getState) => {
         dispatch(remove(id))
-        localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
     }
 }
 
