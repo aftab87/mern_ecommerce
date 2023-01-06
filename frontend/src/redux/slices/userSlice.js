@@ -11,6 +11,17 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        userRegisterRequest: state => {
+            state.loading = true;
+        },
+        userRegisterSuccess: (state, { payload }) => {
+            state.user = payload;
+            state.loading = false;
+        },
+        userRegisterFail: (state, { payload }) => {
+            state.error = payload
+            state.loading = false;
+        },
         userLoginRequest: state => {
             state.loading = true;
         },
@@ -52,6 +63,30 @@ export const login = (email, password) => {
     }
 }
 
+export const register = (name, email, password) => {
+    return async dispatch => {
+        try {
+            dispatch(userRegisterRequest({}))
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+
+            const { data } = await axios.post('/api/users', { name, email, password }, config)
+            localStorage.setItem('user', JSON.stringify(data))
+
+            dispatch(userRegisterSuccess(data))
+            dispatch(userLoginSuccess(data))
+        } catch (e) {
+            dispatch(userRegisterFail(e.response && e.response.data.message
+                ? e.response.data.message
+                : e.message
+            ))
+        }
+    }
+}
+
 export const logout = () => {
     return async dispatch => {
         localStorage.removeItem('user')
@@ -59,6 +94,6 @@ export const logout = () => {
     }
 }
 
-export const { userLoginRequest, userLoginSuccess, userLoginFail, userLogout } = userSlice.actions;
+export const { userRegisterRequest, userRegisterSuccess, userRegisterFail, userLoginRequest, userLoginSuccess, userLoginFail, userLogout } = userSlice.actions;
 const userReducer = userSlice.reducer
 export default userReducer;
