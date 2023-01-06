@@ -13,9 +13,11 @@ export const userSlice = createSlice({
     reducers: {
         userRegisterRequest: state => {
             state.loading = true;
+            state.error = null;
         },
         userRegisterSuccess: (state, { payload }) => {
             state.user = payload;
+            state.error = null;
             state.loading = false;
         },
         userRegisterFail: (state, { payload }) => {
@@ -24,9 +26,11 @@ export const userSlice = createSlice({
         },
         userLoginRequest: state => {
             state.loading = true;
+            state.error = null;
         },
         userLoginSuccess: (state, { payload }) => {
             state.user = payload;
+            state.error = null;
             state.loading = false;
         },
         userLoginFail: (state, { payload }) => {
