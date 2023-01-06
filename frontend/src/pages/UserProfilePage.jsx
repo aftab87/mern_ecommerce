@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { getUserProfile, updateUserProfile } from '../redux/slices/userProfileSlice';
+import { getUserProfile, updateUserProfile } from '../redux/slices/userSlice';
 
 const UserProfilePage = () => {
     const nameRef = useRef()
@@ -14,13 +14,10 @@ const UserProfilePage = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const redirect = searchParams.get('redirect');
 
     const [canShowError, setCanShowError] = useState(true);
     const [message, setMessage] = useState(null);
-    let { loading, error, profile, success } = useSelector(state => state.userProfile);
-    let { user } = useSelector(state => state.user);
+    let { loading, error, user, success } = useSelector(state => state.user);
 
 
     const onChange = (e) => {
@@ -46,10 +43,10 @@ const UserProfilePage = () => {
         } else if (!user.name) {
             dispatch(getUserProfile('profile'))
         } else {
-            nameRef.current.value = profile.name;
-            emailRef.current.value = profile.email;
+            nameRef.current.value = user.name;
+            emailRef.current.value = user.email;
         }
-    }, [dispatch, navigate, profile, user])
+    }, [dispatch, navigate, user])
 
 
     return (
