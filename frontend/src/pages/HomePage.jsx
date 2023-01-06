@@ -23,7 +23,11 @@ const HomePage = () => {
                     ? <Message variant='danger'>{error}</Message>
                     : <Row>{
                         products.map(product => (
-                            <Col key={product.name.trim().replace(" ", "_")} sm={12} md={6} lg={4} xl={3}>
+                            <Col
+                                key={product.name.trim().replace(" ", "_")}
+                                sm={12} md={6} lg={4} xl={3}
+                                className="my-3 p-2"
+                            >
                                 <Product product={product} />
                             </Col>
                         ))
