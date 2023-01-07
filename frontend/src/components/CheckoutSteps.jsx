@@ -22,7 +22,7 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
                 )}
             </Nav.Item>
             <Nav.Item>
-                {step2 ? (
+                {user ? (
                     <LinkContainer to="/shipping">
                         <Nav.Link>
                             Shipping
@@ -35,7 +35,7 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
                 )}
             </Nav.Item>
             <Nav.Item>
-                {step3 ? (
+                {localStorage.getItem('shippingAddress') ? (
                     <LinkContainer to="/payment">
                         <Nav.Link>
                             Payment
@@ -48,7 +48,7 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
                 )}
             </Nav.Item>
             <Nav.Item>
-                {step4 ? (
+                {localStorage.getItem('paymentMethod') ? (
                     <LinkContainer to="/placeorder">
                         <Nav.Link>
                             Place Order

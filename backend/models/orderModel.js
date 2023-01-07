@@ -6,7 +6,7 @@ const orderSchema = mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    orderItems: [
+    cartItems: [
         {
             name: {
                 type: String,
@@ -66,6 +66,11 @@ const orderSchema = mongoose.Schema({
         email: {
             type: String
         }
+    },
+    itemsPrice: {
+        type: Number,
+        required: true,
+        default: 0.0
     },
     taxPrice: {
         type: Number,

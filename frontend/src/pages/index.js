@@ -6,6 +6,7 @@ import RegisterPage from "./RegisterPage";
 import ShippingPage from "./ShippingPage";
 import UserProfilePage from "./UserProfilePage";
 import PaymentPage from './PaymentPage';
+import PlaceOrderPage from './PlaceOrderPage';
 
 export {
     CartPage,
@@ -15,5 +16,6 @@ export {
     RegisterPage,
     ShippingPage,
     PaymentPage,
+    PlaceOrderPage,
     UserProfilePage
 }

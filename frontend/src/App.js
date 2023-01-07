@@ -4,7 +4,8 @@ import { Container } from 'react-bootstrap';
 
 import Footer from './components/Footer';
 import Header from './components/Header';
-import { CartPage, HomePage, LoginPage, PaymentPage, ProductPage, RegisterPage, ShippingPage, UserProfilePage } from './pages';
+import { CartPage, HomePage, LoginPage, PaymentPage, PlaceOrderPage, ProductPage, RegisterPage, ShippingPage, UserProfilePage } from './pages';
+import OrderPage from './pages/OrderPage';
 
 const App = () => {
   return (
@@ -22,6 +23,8 @@ const App = () => {
             <Route path='/cart/:id?' element={<CartPage />} />
             <Route path='/shipping' element={<ShippingPage />} />
             <Route path='/payment' element={<PaymentPage />} />
+            <Route path='/placeorder' element={<PlaceOrderPage />} />
+            <Route path='/order/:id?' element={<OrderPage />} />
           </Routes>
         </Container>
       </main>

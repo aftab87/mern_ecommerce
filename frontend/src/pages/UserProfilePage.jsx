@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { getUserProfile, updateUserProfile } from '../redux/slices/userSlice';
+import { getUserProfile, updateUserProfile, getMyOrders } from '../redux/slices/userSlice';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const UserProfilePage = () => {
     const nameRef = useRef()
@@ -17,7 +18,7 @@ const UserProfilePage = () => {
 
     const [canShowError, setCanShowError] = useState(true);
     const [message, setMessage] = useState(null);
-    let { loading, error, user, success } = useSelector(state => state.user);
+    let { loading, error, user, success, orders, loadingOrders, errorOrders } = useSelector(state => state.user);
 
 
     const onChange = (e) => {
@@ -38,15 +39,18 @@ const UserProfilePage = () => {
     }
 
     useEffect(() => {
+        dispatch(getUserProfile('profile'))
+        dispatch(getMyOrders())
+    }, [])
+
+    useEffect(() => {
         if (!user) {
             navigate('/login')
-        } else if (!user.name) {
-            dispatch(getUserProfile('profile'))
         } else {
             nameRef.current.value = user.name;
             emailRef.current.value = user.email;
         }
-    }, [dispatch, navigate, user])
+    }, [navigate, user])
 
 
     return (
@@ -77,7 +81,48 @@ const UserProfilePage = () => {
                 </Form>
             </Col>
             <Col md={9}>
-                {user && <p>{JSON.stringify(user)}</p>}
+                <h2>My Orders</h2>
+                {errorOrders
+                    ? <Message variant='danger'>{errorOrders}</Message>
+                    : (
+                        <Table striped bordered hover responsive className='table-sm'>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>DATE</th>
+                                    <th>TOTAL</th>
+                                    <th>PAID</th>
+                                    <th>DELIVERED</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {loadingOrders
+                                    ? <tr><td colSpan={6}><Loader /></td></tr>
+                                    : !orders || orders.length === 0
+                                        ? <tr><td colSpan={6}><Message variant='danger'>No orders Found</Message></td></tr>
+                                        : orders.map(order => (
+                                            <tr key={order._id}>
+                                                <td>{order._id}</td>
+                                                <td>{order.createdAt.substring(0, 10)}</td>
+                                                <td>{order.totalPrice}</td>
+                                                <td className={order.isPaid ? '' : 'text-center'}>
+                                                    {order.isPaid ? order.paidAt.substring(0, 10) : <i className='fas fa-times' style={{ color: 'red' }}></i>}
+                                                </td>
+                                                <td className={order.isDelivered ? '' : 'text-center'}>
+                                                    {order.isDelivered ? order.deliveredAt.substring(0, 10) : <i className='fas fa-times' style={{ color: 'red' }}></i>}
+                                                </td>
+                                                <td>
+                                                    <LinkContainer to={`/order/${order._id}`}>
+                                                        <Button variant='light'>Details</Button>
+                                                    </LinkContainer></td>
+                                            </tr>
+                                        ))
+                                }
+                            </tbody>
+                        </Table>
+                    )
+                }
             </Col>
         </Row>
     )

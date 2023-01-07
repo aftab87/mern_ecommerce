@@ -5,6 +5,7 @@ const initialState = {
     user: localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user'))
         : null,
+    orders: []
 }
 
 export const userSlice = createSlice({
@@ -39,6 +40,7 @@ export const userSlice = createSlice({
         },
         userLogout: (state, { payload }) => {
             state.user = null;
+            state.order = null;
             state.loading = false;
         },
         userProfileRequest: state => {
@@ -74,7 +76,21 @@ export const userSlice = createSlice({
         userProfileUpdateReset: (state, { payload }) => {
             state.error = payload
             state.loading = false;
-        }
+        },
+        getMyOrdersRequest: state => {
+            state.errorOrders = null;
+            state.orders = [];
+            state.loadingOrders = true;
+        },
+        getMyOrdersSuccess: (state, { payload }) => {
+            state.errorOrders = null;
+            state.loadingOrders = false;
+            state.orders = payload;
+        },
+        getMyOrdersFail: (state, { payload }) => {
+            state.errorOrders = payload;
+            state.loadingOrders = false;
+        },
     }
 })
 
@@ -183,10 +199,36 @@ export const updateUserProfile = (updatedUser) => {
     }
 }
 
+export const getMyOrders = () => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch(getMyOrdersRequest())
+
+            const { user: { user } } = getState()
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${user.token}`
+                }
+            }
+
+            const { data } = await axios.get(`/api/orders/myorders`, config)
+
+            dispatch(getMyOrdersSuccess(data))
+        } catch (e) {
+            dispatch(getMyOrdersFail(e.response && e.response.data.message
+                ? e.response.data.message
+                : e.message
+            ))
+        }
+    }
+}
+
 export const { userRegisterRequest, userRegisterSuccess, userRegisterFail,
     userLoginRequest, userLoginSuccess, userLoginFail, userLogout,
     userProfileRequest, userProfileSuccess, userProfileFail,
-    userProfileUpdateRequest, userProfileUpdateSuccess, userProfileUpdateFail, userProfileUpdateReset
+    userProfileUpdateRequest, userProfileUpdateSuccess, userProfileUpdateFail, userProfileUpdateReset,
+    getMyOrdersRequest, getMyOrdersSuccess, getMyOrdersFail
 } = userSlice.actions;
 const userReducer = userSlice.reducer
 export default userReducer;
