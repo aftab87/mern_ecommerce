@@ -7,7 +7,7 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
     const { user } = useSelector(state => state.user);
 
     return (
-        <Nav className="row justify-content-center mb-4">
+        <Nav className="justify-content-center mb-4">
             <Nav.Item>
                 {step1 && !user ? (
                     <LinkContainer to="/login">
@@ -20,6 +20,8 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
                         Sign In
                     </Nav.Link>
                 )}
+            </Nav.Item>
+            <Nav.Item>
                 {step2 ? (
                     <LinkContainer to="/shipping">
                         <Nav.Link>
@@ -31,6 +33,8 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
                         Shipping
                     </Nav.Link>
                 )}
+            </Nav.Item>
+            <Nav.Item>
                 {step3 ? (
                     <LinkContainer to="/payment">
                         <Nav.Link>
@@ -42,6 +46,8 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
                         Payment
                     </Nav.Link>
                 )}
+            </Nav.Item>
+            <Nav.Item>
                 {step4 ? (
                     <LinkContainer to="/placeorder">
                         <Nav.Link>
