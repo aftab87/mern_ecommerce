@@ -35,7 +35,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (user) {
-            navigate('/' + redirect || '/')
+            navigate('/' + (redirect || ''))
         }
     }, [navigate, redirect, user])
 
