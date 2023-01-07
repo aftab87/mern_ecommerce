@@ -5,6 +5,7 @@ import ProductPage from "./ProductPage";
 import RegisterPage from "./RegisterPage";
 import ShippingPage from "./ShippingPage";
 import UserProfilePage from "./UserProfilePage";
+import PaymentPage from './PaymentPage';
 
 export {
     CartPage,
@@ -13,5 +14,6 @@ export {
     ProductPage,
     RegisterPage,
     ShippingPage,
+    PaymentPage,
     UserProfilePage
 }

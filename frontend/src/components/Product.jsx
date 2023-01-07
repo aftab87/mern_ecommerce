@@ -10,19 +10,19 @@ const Product = ({ product }) => {
                 <Card.Img src={product.image} variant='top' />
             </Link>
 
-            <Link to={`/product/${product._id}`}>
-                <Card.Title as='div' className='text-center px-2 py-1'>
-                    <strong>{product.name}</strong>
-                </Card.Title>
-            </Link>
             <Card.Body className='d-inline-flex flex-column align-items-stretch'>
+                <Link to={`/product/${product._id}`}>
+                    <Card.Title as='div' className='pb-2'>
+                        <strong>{product.name}</strong>
+                    </Card.Title>
+                </Link>
                 <Card.Text as='div' className='mt-auto'>
                     <Rating
                         value={product.rating}
                         text={`${product.numReviews} reviews`} />
                 </Card.Text>
 
-                <Card.Text as='h3' className='mt-2'>
+                <Card.Text as='h3'>
                     ${product.price}
                 </Card.Text>
             </Card.Body>
