@@ -131,6 +131,22 @@ export const userSlice = createSlice({
             state.errorProfile = payload
             state.loadingProfile = false
         },
+        updateProfileRequest: state => {
+            state.errorProfileUpdate = null
+            state.loadingProfileUpdate = true
+        },
+        updateProfileSuccess: (state, { payload }) => {
+            state.errorProfileUpdate = null
+            state.loadingProfileUpdate = false
+            state.successProfileUpdate = true
+        },
+        updateProfileFail: (state, { payload }) => {
+            state.errorProfileUpdate = payload
+            state.loadingProfileUpdate = false
+        },
+        updateProfileReset: state => {
+            state.successProfileUpdate = false
+        }
     },
 })
 
@@ -355,6 +371,37 @@ export const deleteUser = id => {
     }
 }
 
+export const updateProfile = updatedUser => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch(updateProfileRequest())
+
+            const {
+                user: { user },
+            } = getState()
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
+
+            const { data } = await axios.put(`/api/users/${updatedUser._id}`, updatedUser, config)
+
+            dispatch(updateProfileSuccess())
+            dispatch(getProfileSuccess(data))
+        } catch (e) {
+            dispatch(
+                updateProfileFail(
+                    e.response && e.response.data.message
+                        ? e.response.data.message
+                        : e.message
+                )
+            )
+        }
+    }
+}
+
 export const getMyOrders = () => {
     return async (dispatch, getState) => {
         try {
@@ -412,6 +459,10 @@ export const {
     getProfileRequest,
     getProfileSuccess,
     getProfileFail,
+    updateProfileRequest,
+    updateProfileSuccess,
+    updateProfileFail,
+    updateProfileReset,
 } = userSlice.actions
 const userReducer = userSlice.reducer
 export default userReducer

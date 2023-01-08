@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../../components/FormContainer';
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
-import { register, getProfile } from '../../redux/slices/userSlice';
-import { useParams } from 'react-router-dom';
+import { getProfile, updateProfile, updateProfileReset } from '../../redux/slices/userSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const UsersEditPage = () => {
@@ -15,23 +15,26 @@ const UsersEditPage = () => {
     const isAdminRef = useRef();
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [canShowError, setCanShowError] = useState(true);
-    const [message, setMessage] = useState(null);
-    let { loadingProfile, errorProfile, profile } = useSelector(state => state.user);
+    let { profile, loadingProfile, errorProfile, loadingProfileUpdate, successProfileUpdate, errorProfileUpdate } = useSelector(state => state.user);
 
     useEffect(() => {
-        // dispatch(getProfile(id))
-        // console.log("profile", profile)
-        // console.log("id", id)
-        if (!profile.name || profile._id !== id) {
-            dispatch(getProfile(id))
+        if (successProfileUpdate) {
+            dispatch(updateProfileReset())
+            navigate('/admin/users')
         } else {
-            nameRef.current.value = profile.name
-            emailRef.current.value = profile.email
-            isAdminRef.current.checked = profile.isAdmin
+            if (!loadingProfile && (!profile.name || profile._id !== id)) {
+                dispatch(getProfile(id))
+            } else if (profile && JSON.stringify(profile) !== '{}') {
+                nameRef.current.value = profile.name
+                emailRef.current.value = profile.email
+                isAdminRef.current.checked = profile.isAdmin
+            }
         }
-    }, [dispatch, id, profile])
+
+    }, [dispatch, id, loadingProfile, navigate, profile, successProfileUpdate])
 
     const onChange = (e) => {
         setCanShowError(false)
@@ -44,7 +47,7 @@ const UsersEditPage = () => {
         const email = emailRef.current && emailRef.current['value'] ? emailRef.current['value'] : ''
         const isAdmin = isAdminRef.current && isAdminRef.current.checked
 
-        // dispatch(register(name, email, isAdmin))
+        dispatch(updateProfile({ _id: id, name, email, isAdmin }))
     }
 
     return (
@@ -53,23 +56,29 @@ const UsersEditPage = () => {
                 Go Back
             </Link>
             <FormContainer>
-                <h1>Edit user </h1>
-                {canShowError && (message || errorProfile) && <Message variant='danger'>{message || errorProfile}</Message>}
-                {loadingProfile && <Loader />}
-                <Form onSubmit={submitHandler} noValidate>
-                    <Form.Group controlId='name' className='mt-3'>
-                        <Form.Label>Full name</Form.Label>
-                        <Form.Control type='text' placeholder='John Doe' ref={nameRef} onChange={onChange} />
-                    </Form.Group>
-                    <Form.Group controlId='email' className='mt-3'>
-                        <Form.Label>Email Address</Form.Label>
-                        <Form.Control type='text' placeholder='user@domain.com' ref={emailRef} onChange={onChange} />
-                    </Form.Group>
-                    <Form.Group controlId='Admin' className='mt-3'>
-                        <Form.Check type='checkbox' label='Admin?' ref={isAdminRef} />
-                    </Form.Group>
-                    <Button type='submit' variant='primary' className='mt-4'>Update</Button>
-                </Form>
+                <h1>Edit user</h1>
+                {canShowError && errorProfile && <Message variant='danger'>{errorProfile}</Message>}
+                {loadingProfileUpdate && <Loader />}
+                {errorProfileUpdate && <Message variant='danger'>{errorProfileUpdate}</Message>}
+                {loadingProfile
+                    ? <Loader />
+                    : (
+                        <Form onSubmit={submitHandler} noValidate>
+                            <Form.Group controlId='name' className='mt-3'>
+                                <Form.Label>Full name</Form.Label>
+                                <Form.Control type='text' placeholder='John Doe' ref={nameRef} onChange={onChange} />
+                            </Form.Group>
+                            <Form.Group controlId='email' className='mt-3'>
+                                <Form.Label>Email Address</Form.Label>
+                                <Form.Control type='text' placeholder='user@domain.com' ref={emailRef} onChange={onChange} />
+                            </Form.Group>
+                            <Form.Group controlId='Admin' className='mt-3'>
+                                <Form.Check type='checkbox' label='Admin?' ref={isAdminRef} />
+                            </Form.Group>
+                            <Button type='submit' variant='primary' className='mt-4'>Update</Button>
+                        </Form>
+                    )
+                }
             </FormContainer>
         </>
     )
