@@ -41,7 +41,7 @@ const UserProfilePage = () => {
     useEffect(() => {
         dispatch(getUserProfile('profile'))
         dispatch(getMyOrders())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         if (!user) {
@@ -88,7 +88,7 @@ const UserProfilePage = () => {
                         <Table striped bordered hover responsive className='table-sm'>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Order ID</th>
                                     <th>DATE</th>
                                     <th>TOTAL</th>
                                     <th>PAID</th>
@@ -102,7 +102,7 @@ const UserProfilePage = () => {
                                     : !orders || orders.length === 0
                                         ? <tr><td colSpan={6}><Message variant='danger'>No orders Found</Message></td></tr>
                                         : orders.map(order => (
-                                            <tr key={order._id}>
+                                            <tr key={order._id} >
                                                 <td>{order._id}</td>
                                                 <td>{order.createdAt.substring(0, 10)}</td>
                                                 <td>{order.totalPrice}</td>
@@ -112,10 +112,11 @@ const UserProfilePage = () => {
                                                 <td className={order.isDelivered ? '' : 'text-center'}>
                                                     {order.isDelivered ? order.deliveredAt.substring(0, 10) : <i className='fas fa-times' style={{ color: 'red' }}></i>}
                                                 </td>
-                                                <td>
+                                                <td className='text-center'>
                                                     <LinkContainer to={`/order/${order._id}`}>
-                                                        <Button variant='light'>Details</Button>
-                                                    </LinkContainer></td>
+                                                        <Button variant='dark'>Details</Button>
+                                                    </LinkContainer>
+                                                </td>
                                             </tr>
                                         ))
                                 }

@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { PayPalButton } from 'react-paypal-button-v2'
-import { Button, Card, Col, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
+import { Card, Col, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Message from '../components/Message';
@@ -10,16 +10,20 @@ import Loader from '../components/Loader';
 import { pay, payOrderReset } from '../redux/slices/paySlice';
 
 const OrderPage = () => {
+    const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { id } = useParams();
     const [sdkReady, setSdkReady] = useState(false)
 
     const {
         order: { user, _id, cartItems, shippingAddress, paymentMethod, shippingPrice, itemsPrice, taxPrice, totalPrice, isPaid, paidAt, isDelivered, deliveredAt },
         loading,
         error
-    } = useSelector(state => state.cart)
+    } = useSelector(state => {
+        if (!state.user.user)
+            navigate(`/login?redirect=order/${id}`)
+        return state.cart
+    })
 
     const {
         loading: loadingPay,
@@ -48,6 +52,8 @@ const OrderPage = () => {
                 setSdkReady(true)
             }
         }
+
+        // eslint-disable-next-line
     }, [dispatch, id, successPay])
 
     const successPaymentHandler = (paymentResult) => {
@@ -86,7 +92,7 @@ const OrderPage = () => {
                                                 {paymentMethod}
                                             </p>
                                             {isPaid
-                                                ? <Message variant='success'>Paid on: {paidAt}</Message>
+                                                ? <Message variant='success'>Paid on: {paidAt.substring(0, 10)}</Message>
                                                 : <Message variant='danger'>Payment pending</Message>
                                             }
                                         </ListGroup.Item>

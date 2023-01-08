@@ -1,32 +1,32 @@
 {
-  "name": "mern_ecommerce",
-  "version": "1.0.0",
-  "description": "An ecommerce web app for Aftab's portfolio",
-  "main": "server.js",
-  "type": "module",
-  "scripts": {
-    "server": "nodemon backend/server --watch",
-    "data:import": "node backend/seeder",
-    "data:destroy": "node backend/seeder -d"
-  },
-  "keywords": [
-    "ecommerce",
-    "aftab",
-    "safdar",
-    "mern",
-    "mongodb",
-    "express",
-    "react",
-    "nodejs"
-  ],
-  "author": "Aftab Safdar",
-  "license": "MIT",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "express-async-handler": "^1.2.0",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.8.1"
-  }
+    "name": "mern_ecommerce",
+    "version": "1.0.0",
+    "description": "An ecommerce web app for Aftab's portfolio",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "server": "nodemon backend/server --watch",
+        "data:import": "node backend/seeder",
+        "data:destroy": "node backend/seeder -d"
+    },
+    "keywords": [
+        "ecommerce",
+        "aftab",
+        "safdar",
+        "mern",
+        "mongodb",
+        "express",
+        "react",
+        "nodejs"
+    ],
+    "author": "Aftab Safdar",
+    "license": "MIT",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "express-async-handler": "^1.2.0",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^6.8.1"
+    }
 }

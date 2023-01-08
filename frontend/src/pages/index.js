@@ -7,6 +7,9 @@ import ShippingPage from "./ShippingPage";
 import UserProfilePage from "./UserProfilePage";
 import PaymentPage from './PaymentPage';
 import PlaceOrderPage from './PlaceOrderPage';
+import UsersPage from './admin/UsersPage';
+import OrderPage from './OrderPage';
+import UsersEditPage from './admin/UsersEditPage';
 
 export {
     CartPage,
@@ -17,5 +20,8 @@ export {
     ShippingPage,
     PaymentPage,
     PlaceOrderPage,
-    UserProfilePage
+    UserProfilePage,
+    OrderPage,
+    UsersPage,
+    UsersEditPage,
 }
