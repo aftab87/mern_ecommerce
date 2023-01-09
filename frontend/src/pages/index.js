@@ -10,6 +10,7 @@ import PlaceOrderPage from './PlaceOrderPage';
 import UsersPage from './admin/UsersPage';
 import OrderPage from './OrderPage';
 import UsersEditPage from './admin/UsersEditPage';
+import ProductsPage from './admin/ProductsPage';
 
 export {
     CartPage,
@@ -24,4 +25,5 @@ export {
     OrderPage,
     UsersPage,
     UsersEditPage,
+    ProductsPage,
 }

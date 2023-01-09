@@ -145,8 +145,13 @@ const deleteUser = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/:id
 // @access  Private
 const updateProfileById = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id)
+    const id = req.params.id
+    if (id === "63abb5fd98b24a20c3457e02" || id === "63abb5fd98b24a20c3457e03") {
+        res.status(401)
+        throw new Error('Cannot edit user with id ' + id)
+    }
 
+    const user = await User.findById(id)
     if (user) {
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email

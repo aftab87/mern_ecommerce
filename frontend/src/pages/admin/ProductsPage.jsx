@@ -1,13 +1,13 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { deleteUser, getUsersList, deleteUserReset } from "../../redux/slices/userSlice"
+import { deleteUser, getUsersList } from "../../redux/slices/userSlice"
 import Message from "../../components/Message"
 import Loader from "../../components/Loader"
 import { Button, Table } from "react-bootstrap"
 import { LinkContainer } from "react-router-bootstrap"
 import { useNavigate } from "react-router-dom"
 
-const UsersPage = () => {
+const ProductsPage = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -22,9 +22,6 @@ const UsersPage = () => {
             navigate('/')
         else
             navigate('/login')
-        return () => {
-            dispatch(deleteUserReset())
-        }
     }, [dispatch, navigate, user])
 
     function deleteHandler(id) {
@@ -65,30 +62,31 @@ const UsersPage = () => {
                                     {user.isAdmin ? (
                                         <i
                                             className='fas fa-check'
-                                            style={{ color: "green" }} >
-                                        </i>
+                                            style={{ color: "green" }}
+                                        ></i>
                                     ) : (
                                         <i
                                             className='fas fa-times'
-                                            style={{ color: "red" }} >
-                                        </i>
+                                            style={{ color: "red" }}
+                                        ></i>
                                     )}
                                 </td>
                                 <td>
                                     <LinkContainer
-                                        to={`/admin/users/${user._id}/edit`} >
+                                        to={`/admin/users/${user._id}/edit`}
+                                    >
                                         <Button
                                             variant='light'
-                                            disabled={user._id === "63abb5fd98b24a20c3457e02" || user._id === "63abb5fd98b24a20c3457e03"}
-                                            className='btn-sm' >
+                                            className='btn-sm'
+                                        >
                                             <i className='fas fa-edit'></i>
                                         </Button>
                                     </LinkContainer>
                                     <Button
                                         variant='danger'
                                         className='btn-sm'
-                                        disabled={user._id === "63abb5fd98b24a20c3457e02" || user._id === "63abb5fd98b24a20c3457e03"}
-                                        onClick={() => deleteHandler(user._id)} >
+                                        onClick={() => deleteHandler(user._id)}
+                                    >
                                         <i className='fas fa-trash'></i>
                                     </Button>
                                 </td>
@@ -101,4 +99,4 @@ const UsersPage = () => {
     )
 }
 
-export default UsersPage
+export default ProductsPage

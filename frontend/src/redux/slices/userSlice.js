@@ -117,6 +117,9 @@ export const userSlice = createSlice({
         deleteUserFail: (state, { payload }) => {
             state.errorDelete = payload
         },
+        deleteUserReset: (state, { payload }) => {
+            state.errorDelete = null
+        },
         getProfileRequest: state => {
             state.errorProfile = null
             state.profile = {}
@@ -456,6 +459,7 @@ export const {
     deleteUserRequest,
     deleteUserSuccess,
     deleteUserFail,
+    deleteUserReset,
     getProfileRequest,
     getProfileSuccess,
     getProfileFail,
