@@ -41,7 +41,7 @@ const UsersPage = () => {
             ) : errorUsers ? (
                 <Message variant='danger'>{errorUsers}</Message>
             ) : (
-                <Table>
+                <Table striped bordered hover responsive className="table-sm">
                     <thead>
                         <tr>
                             <th>ID</th>

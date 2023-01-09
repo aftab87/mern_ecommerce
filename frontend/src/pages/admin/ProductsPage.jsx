@@ -1,79 +1,85 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { deleteUser, getUsersList } from "../../redux/slices/userSlice"
 import Message from "../../components/Message"
 import Loader from "../../components/Loader"
-import { Button, Table } from "react-bootstrap"
+import { Button, Col, Row, Table } from "react-bootstrap"
 import { LinkContainer } from "react-router-bootstrap"
-import { useNavigate } from "react-router-dom"
+import { getProductsList, deleteProduct, deleteProductReset } from "../../redux/slices/productListSlice"
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
-    const { user, loadingUsers, errorUsers, users, errorDelete } = useSelector(
+    const { user } = useSelector(
         state => state.user
+    )
+
+    const { loading, error, products, errorDelete } = useSelector(
+        state => state.productList
     )
 
     useEffect(() => {
         if (user && user.isAdmin)
-            dispatch(getUsersList())
-        else if (user)
-            navigate('/')
-        else
-            navigate('/login')
-    }, [dispatch, navigate, user])
+            dispatch(getProductsList())
+        return () => {
+            dispatch(deleteProductReset())
+        }
+    }, [dispatch, user])
 
     function deleteHandler(id) {
         if (window.confirm('Are you sure?'))
-            dispatch(deleteUser(id))
+            dispatch(deleteProduct(id))
+    }
+
+    function createProductHandler() {
+
     }
 
     return (
         <>
-            <h1>Users</h1>
+            <Row className='align-items-center'>
+                <Col>
+                    <h1>Products</h1>
+                </Col>
+                <Col className="text-end">
+                    <Button className="my-3" onClick={createProductHandler}>
+                        <i className="fas fa-plus"></i> Create Product
+                    </Button>
+                </Col>
+            </Row>
             {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
-            {!users || loadingUsers ? (
+            {!products || loading ? (
                 <Loader />
-            ) : errorUsers ? (
-                <Message variant='danger'>{errorUsers}</Message>
+            ) : error ? (
+                <Message variant='danger'>{error}</Message>
             ) : (
-                <Table>
+                <Table striped bordered hover responsive className="table-sm">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>NAME</th>
-                            <th>EMAIL</th>
-                            <th>ADMIN</th>
+                            <th>PRICE</th>
+                            <th>CATEGORY</th>
+                            <th>BRAND</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(user => (
-                            <tr key={user._id}>
-                                <td>{user._id}</td>
-                                <td>{user.name}</td>
+                        {products.map(product => (
+                            <tr key={product._id}>
+                                <td>{product._id}</td>
+                                <td>{product.name}</td>
                                 <td>
-                                    <a href={`mailto:${user.email}`}>
-                                        {user.email}
-                                    </a>
+                                    {product.price}
                                 </td>
                                 <td>
-                                    {user.isAdmin ? (
-                                        <i
-                                            className='fas fa-check'
-                                            style={{ color: "green" }}
-                                        ></i>
-                                    ) : (
-                                        <i
-                                            className='fas fa-times'
-                                            style={{ color: "red" }}
-                                        ></i>
-                                    )}
+                                    {product.category}
+                                </td>
+                                <td>
+                                    {product.brand}
                                 </td>
                                 <td>
                                     <LinkContainer
-                                        to={`/admin/users/${user._id}/edit`}
+                                        to={`/admin/products/${product._id}/edit`}
                                     >
                                         <Button
                                             variant='light'
@@ -85,7 +91,7 @@ const ProductsPage = () => {
                                     <Button
                                         variant='danger'
                                         className='btn-sm'
-                                        onClick={() => deleteHandler(user._id)}
+                                        onClick={() => deleteHandler(product._id)}
                                     >
                                         <i className='fas fa-trash'></i>
                                     </Button>

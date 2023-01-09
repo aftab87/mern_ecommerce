@@ -21,6 +21,19 @@ export const productListSlice = createSlice({
             state.error = payload;
             state.loading = false;
         },
+        deleteProductRequest: state => {
+            state.errorDelete = null
+        },
+        deleteProductSuccess: (state, { payload }) => {
+            state.errorDelete = null
+            state.products = payload
+        },
+        deleteProductFail: (state, { payload }) => {
+            state.errorDelete = payload
+        },
+        deleteProductReset: (state, { payload }) => {
+            state.errorDelete = null
+        },
     },
 })
 
@@ -39,6 +52,39 @@ export const getProductsList = () => {
     }
 }
 
-export const { request, save, fail } = productListSlice.actions;
+export const deleteProduct = id => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch(deleteProductRequest())
+
+            const {
+                user: { user },
+            } = getState()
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
+
+            const { data } = await axios.delete(`/api/products/${id}`, config)
+
+            dispatch(deleteProductSuccess(data))
+        } catch (e) {
+            dispatch(
+                deleteProductFail(
+                    e.response && e.response.data.message
+                        ? e.response.data.message
+                        : e.message
+                )
+            )
+        }
+    }
+}
+
+export const {
+    request, save, fail,
+    deleteProductRequest, deleteProductSuccess, deleteProductFail, deleteProductReset,
+} = productListSlice.actions;
 const productListReducer = productListSlice.reducer;
 export default productListReducer;
